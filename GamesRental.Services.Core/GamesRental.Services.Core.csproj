@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GamesRental.Data.Models\GamesRental.Data.Models.csproj" />
+    <ProjectReference Include="..\GamesRental.Data\GamesRental.Data.csproj" />
+    <ProjectReference Include="..\GamesRental.GCommon\GamesRental.GCommon.csproj" />
+    <ProjectReference Include="..\GamesRental.Services.AutoMapping\GamesRental.Services.AutoMapping.csproj" />
+    <ProjectReference Include="..\GamesRental.Services.Common\GamesRental.Services.Common.csproj" />
+    <ProjectReference Include="..\GamesRental.Web.ViewModels\GamesRental.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
