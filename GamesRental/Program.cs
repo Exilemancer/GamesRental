@@ -30,6 +30,7 @@ namespace GamesRental.Web
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredUniqueChars = 0;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
