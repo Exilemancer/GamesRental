@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using GamesRental.Data;
 namespace GamesRental.Web
 {
     using GamesRental.Data;
@@ -15,8 +18,20 @@ namespace GamesRental.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 0;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
