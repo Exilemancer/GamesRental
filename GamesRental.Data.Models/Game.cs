@@ -14,9 +14,13 @@ namespace GamesRental.Data.Models
         public string Title { get; set; } = null!;
 
         [Required]
+        [MinLength(GameDescriptionMinLength)]
+        [MaxLength(GameDescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        public string? ImageUrl { get; set; }
+        [MinLength(GameImageUrlMinLength)]
+        [MaxLength(GameImageUrlMaxLength)]
+        public string ImageUrl { get; set; } = null!;
 
         public DateTime ReleaseDate { get; set; }
 

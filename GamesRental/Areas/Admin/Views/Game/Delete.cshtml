@@ -1,0 +1,22 @@
+﻿@model GamesRental.Data.Models.Game
+
+@{
+    ViewData["Title"] = "Delete Game";
+}
+
+<h2>Are you sure you want to delete this game?</h2>
+
+<div>
+    <strong>@Model.Title</strong><br />
+    <img src="@Model.ImageUrl" style="height: 100px;" />
+    <p>@Model.Description</p>
+    <p>Platform: @Model.Platform?.Name</p>
+    <p>Genre: @Model.Genre?.Name</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
