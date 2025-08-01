@@ -38,6 +38,7 @@ namespace GamesRental.Web
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<IGameService, GameService>();
+            builder.Services.AddScoped<IRentalService, RentalService>();
 
 
             var app = builder.Build();
