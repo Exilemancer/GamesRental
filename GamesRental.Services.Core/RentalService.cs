@@ -16,7 +16,7 @@ namespace GamesRental.Services
         }
 
         public async Task<bool> RentGameAsync(int gameId, string userId)
-        {            
+        {
             var copy = await _context.GameCopies
                 .FirstOrDefaultAsync(gc => gc.GameId == gameId && !gc.IsRented);
 
@@ -57,5 +57,23 @@ namespace GamesRental.Services
                 .ToListAsync();
         }
 
+        public async Task<bool> ReturnGameAsync(int rentalId, string userId)
+        {
+            var rental = await _context.Rentals
+                .Include(r => r.GameCopy)
+                .FirstOrDefaultAsync(r => r.Id == rentalId && r.UserId == userId && r.ReturnedOn == null);
+
+            if (rental == null)
+                return false;
+
+            rental.ReturnedOn = DateTime.UtcNow;
+
+            rental.GameCopy.IsRented = false;
+            rental.GameCopy.RentedByUserId = null;
+            rental.GameCopy.RentedOn = null;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

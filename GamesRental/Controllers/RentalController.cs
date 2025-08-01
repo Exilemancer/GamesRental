@@ -37,5 +37,19 @@ namespace GamesRental.Web.Controllers
             var rentals = await _rentalService.GetActiveRentalsByUserAsync(userId);
             return View(rentals);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Return(int rentalId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            bool success = await _rentalService.ReturnGameAsync(rentalId, userId);
+
+            if (!success)
+                TempData["Error"] = "Error while returning the game.";
+            else
+                TempData["Success"] = "Game returned successfully!";
+
+            return RedirectToAction("MyGames");
+        }
     }
 }

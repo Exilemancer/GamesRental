@@ -8,5 +8,7 @@ namespace GamesRental.Services.Contracts
 
         Task<IEnumerable<RentalViewModel>> GetActiveRentalsByUserAsync(string userId);
 
+        Task<bool> ReturnGameAsync(int rentalId, string userId);
+
     }
 }
