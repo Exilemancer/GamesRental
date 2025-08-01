@@ -1,6 +1,7 @@
 ﻿using GamesRental.Data;
 using GamesRental.Data.Models;
 using GamesRental.Services.Contracts;
+using GamesRental.Web.ViewModels.Rental;
 using Microsoft.EntityFrameworkCore;
 
 namespace GamesRental.Services
@@ -37,5 +38,24 @@ namespace GamesRental.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<RentalViewModel>> GetActiveRentalsByUserAsync(string userId)
+        {
+            return await _context.Rentals
+                .Include(r => r.GameCopy)
+                    .ThenInclude(gc => gc.Game)
+                        .ThenInclude(g => g.Platform)
+                .Where(r => r.UserId == userId && r.ReturnedOn == null)
+                .Select(r => new RentalViewModel
+                {
+                    RentalId = r.Id,
+                    GameTitle = r.GameCopy.Game.Title,
+                    Platform = r.GameCopy.Game.Platform.Name,
+                    ImageUrl = r.GameCopy.Game.ImageUrl,
+                    RentedOn = r.RentedOn
+                })
+                .ToListAsync();
+        }
+
     }
 }

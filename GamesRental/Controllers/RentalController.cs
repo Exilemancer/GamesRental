@@ -29,5 +29,13 @@ namespace GamesRental.Web.Controllers
 
             return RedirectToAction("Details", "Game", new { id = gameId });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MyGames()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var rentals = await _rentalService.GetActiveRentalsByUserAsync(userId);
+            return View(rentals);
+        }
     }
 }
