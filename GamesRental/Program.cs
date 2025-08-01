@@ -4,6 +4,8 @@ namespace GamesRental.Web
     using GamesRental.Data;
     using GamesRental.Data.Models;
     using GamesRental.Data.Seeding.Input;
+    using GamesRental.Services;
+    using GamesRental.Services.Contracts;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     public class Program
@@ -34,6 +36,9 @@ namespace GamesRental.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IGameService, GameService>();
+
 
             var app = builder.Build();
 
