@@ -1,0 +1,9 @@
+﻿@model IEnumerable<GamesRental.Web.ViewModels.Game.GameCatalogViewModel>
+
+    @{
+    ViewData["Title"] = "All Games";
+    }
+
+    <h2>All Games</h2>
+
+    @await Html.PartialAsync("Catalog", Model) @* или използвай повторно Catalog View *@

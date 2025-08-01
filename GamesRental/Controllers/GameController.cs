@@ -17,5 +17,13 @@ namespace GamesRental.Web.Controllers
             var games = await _gameService.GetAvailableGamesAsync();
             return View(games);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var game = await _gameService.GetGameDetailsByIdAsync(id);
+            if (game == null) return NotFound();
+            return View(game);
+        }
+
     }
 }
