@@ -51,5 +51,14 @@ namespace GamesRental.Web.Controllers
 
             return RedirectToAction("MyGames");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> History()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var rentals = await _rentalService.GetRentalHistoryAsync(userId);
+            return View(rentals);
+        }
+
     }
 }

@@ -125,7 +125,7 @@ namespace GamesRental.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WishlistItems",
+                name: "Wishlists",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -136,15 +136,15 @@ namespace GamesRental.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishlistItems", x => x.Id);
+                    table.PrimaryKey("PK_Wishlists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WishlistItems_AspNetUsers_UserId",
+                        name: "FK_Wishlists_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WishlistItems_Games_GameId",
+                        name: "FK_Wishlists_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
@@ -221,13 +221,13 @@ namespace GamesRental.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WishlistItems_GameId",
-                table: "WishlistItems",
+                name: "IX_Wishlists_GameId",
+                table: "Wishlists",
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WishlistItems_UserId_GameId",
-                table: "WishlistItems",
+                name: "IX_Wishlists_UserId_GameId",
+                table: "Wishlists",
                 columns: new[] { "UserId", "GameId" },
                 unique: true);
         }
@@ -242,7 +242,7 @@ namespace GamesRental.Data.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "WishlistItems");
+                name: "Wishlists");
 
             migrationBuilder.DropTable(
                 name: "GameCopies");

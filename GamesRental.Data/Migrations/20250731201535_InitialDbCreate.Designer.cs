@@ -260,7 +260,7 @@ namespace GamesRental.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("GamesRental.Data.Models.WishlistItem", b =>
+            modelBuilder.Entity("GamesRental.Data.Models.Wishlist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,7 +285,7 @@ namespace GamesRental.Data.Migrations
                     b.HasIndex("UserId", "GameId")
                         .IsUnique();
 
-                    b.ToTable("WishlistItems");
+                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -499,7 +499,7 @@ namespace GamesRental.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GamesRental.Data.Models.WishlistItem", b =>
+            modelBuilder.Entity("GamesRental.Data.Models.Wishlist", b =>
                 {
                     b.HasOne("GamesRental.Data.Models.Game", "Game")
                         .WithMany("WishlistedBy")

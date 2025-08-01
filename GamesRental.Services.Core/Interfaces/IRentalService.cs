@@ -10,5 +10,6 @@ namespace GamesRental.Services.Contracts
 
         Task<bool> ReturnGameAsync(int rentalId, string userId);
 
+        Task<IEnumerable<RentalHistoryViewModel>> GetRentalHistoryAsync(string userId);
     }
 }

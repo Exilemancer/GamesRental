@@ -8,6 +8,6 @@ namespace GamesRental.Data.Models
 
         public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
 
-        public virtual ICollection<WishlistItem> Wishlist { get; set; } = new HashSet<WishlistItem>();
+        public virtual ICollection<Wishlist> Wishlist { get; set; } = new HashSet<Wishlist>();
     }
 }

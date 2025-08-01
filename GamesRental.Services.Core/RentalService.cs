@@ -75,5 +75,25 @@ namespace GamesRental.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<RentalHistoryViewModel>> GetRentalHistoryAsync(string userId)
+        {
+            return await _context.Rentals
+                .Include(r => r.GameCopy)
+                    .ThenInclude(gc => gc.Game)
+                        .ThenInclude(g => g.Platform)
+                .Where(r => r.UserId == userId && r.ReturnedOn != null)
+                .OrderByDescending(r => r.RentedOn)
+                .Select(r => new RentalHistoryViewModel
+                {
+                    GameTitle = r.GameCopy.Game.Title,
+                    Platform = r.GameCopy.Game.Platform.Name,
+                    ImageUrl = r.GameCopy.Game.ImageUrl,
+                    RentedOn = r.RentedOn,
+                    ReturnedOn = r.ReturnedOn.Value
+                })
+                .ToListAsync();
+        }
+
     }
 }

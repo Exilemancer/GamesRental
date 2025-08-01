@@ -39,6 +39,7 @@ namespace GamesRental.Web
 
             builder.Services.AddScoped<IGameService, GameService>();
             builder.Services.AddScoped<IRentalService, RentalService>();
+            builder.Services.AddScoped<IWishlistService, WishlistService>();
 
 
             var app = builder.Build();

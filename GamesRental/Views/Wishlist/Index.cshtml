@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GamesRental.Web.ViewModels.Wishlist.WishlistGameViewModel>
+
+<h2>My Wishlist</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">You have no games in your wishlist.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var game in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@game.ImageUrl" class="card-img-top" style="height: 200px; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@game.Title</h5>
+                        <p>@game.Genre | @game.Platform</p>
+
+                        <form asp-action="Remove" method="post">
+                            <input type="hidden" name="gameId" value="@game.GameId" />
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

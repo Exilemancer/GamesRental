@@ -13,13 +13,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Platform> Platforms { get; set; }
     public DbSet<Review> Reviews { get; set; }
-    public DbSet<WishlistItem> WishlistItems { get; set; }
+    public DbSet<Wishlist> Wishlists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<WishlistItem>()
+        builder.Entity<Wishlist>()
             .HasIndex(w => new { w.UserId, w.GameId })
             .IsUnique();
 

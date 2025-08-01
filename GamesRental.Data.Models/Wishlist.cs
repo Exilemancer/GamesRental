@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GamesRental.Data.Models
 {
-    public class WishlistItem
+    public class Wishlist
     {
         [Key]
         public int Id { get; set; }

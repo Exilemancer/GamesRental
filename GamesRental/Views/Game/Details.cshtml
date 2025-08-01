@@ -45,3 +45,11 @@ else
         }
     </ul>
 }
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Wishlist" asp-action="Add" method="post" class="d-inline">
+        <input type="hidden" name="gameId" value="@Model.Id" />
+        <button type="submit" class="btn btn-outline-danger">❤️ Add to Wishlist</button>
+    </form>
+}
