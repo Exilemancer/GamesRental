@@ -1,4 +1,5 @@
-﻿@model IEnumerable<GamesRental.Web.ViewModels.Game.GameCatalogViewModel>
+﻿@using GamesRental.Data.Models
+@model IEnumerable<GamesRental.Web.ViewModels.Game.GameCatalogViewModel>
 
 @{
     ViewData["Title"] = "Game Catalog";
@@ -23,7 +24,7 @@ else
                         <p class="card-text mb-1">
                             <strong>Genre:</strong> @game.Genre<br />
                             <strong>Platform:</strong> @game.Platform<br />
-                            <strong>Released:</strong> @game.AvailableCopies
+                            <strong>Available Copies:</strong> @game.AvailableCopies
                         </p>
                         <a asp-controller="Game" asp-action="Details" asp-route-id="@game.Id" class="btn btn-primary mt-auto">View Details</a>
                     </div>
