@@ -1,0 +1,37 @@
+﻿@model GamesRental.Web.ViewModels.Game.GameFormViewModel
+
+<div class="mb-3">
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" class="form-control" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="ImageUrl" class="form-label"></label>
+    <input asp-for="ImageUrl" class="form-control" />
+    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="GenreId" class="form-label"></label>
+    <select asp-for="GenreId" asp-items="Model.Genres" class="form-select"></select>
+    <span asp-validation-for="GenreId" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="PlatformId" class="form-label"></label>
+    <select asp-for="PlatformId" asp-items="Model.Platforms" class="form-select"></select>
+    <span asp-validation-for="PlatformId" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="ReleaseDate" class="form-label"></label>
+    <input asp-for="ReleaseDate" class="form-control" type="date" />
+    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+</div>

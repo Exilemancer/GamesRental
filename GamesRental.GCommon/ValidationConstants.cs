@@ -9,6 +9,8 @@
         public const int GameDescriptionMaxLength = 1000;
         public const int GameImageUrlMinLength = 3;
         public const int GameImageUrlMaxLength = 200;
+        public const int GameTotalCopiesMinValue = 1;
+        public const int GameTotalCopiesMaxValue = 100;
 
         // Genre
         public const int GenreNameMaxLength = 50;

@@ -20,7 +20,7 @@ namespace GamesRental.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedAccount = false;
@@ -32,8 +32,8 @@ namespace GamesRental.Web
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredUniqueChars = 0;
             })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddControllersWithViews();
 
@@ -41,6 +41,9 @@ namespace GamesRental.Web
             builder.Services.AddScoped<IRentalService, RentalService>();
             builder.Services.AddScoped<IWishlistService, WishlistService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+
+            builder.Services.AddRazorPages();
+
 
             var app = builder.Build();
 
@@ -71,16 +74,52 @@ namespace GamesRental.Web
             app.UseAuthorization();
 
             app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-            app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
 
             app.Run();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                await SeedRolesAndAdminAsync(services);
+            }
+
+            async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
+            {
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                string[] roleNames = { "Admin", "User" };
+
+                foreach (var roleName in roleNames)
+                {
+                    if (!await roleManager.RoleExistsAsync(roleName))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(roleName));
+                    }
+                }
+                
+                var adminEmail = "admin@site.com";
+                var adminPassword = "Admin123!";
+
+                if (await userManager.FindByEmailAsync(adminEmail) == null)
+                {
+                    var adminUser = new ApplicationUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail
+                    };
+
+                    var result = await userManager.CreateAsync(adminUser, adminPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
+                    }
+                }
+            }
         }
     }
 }

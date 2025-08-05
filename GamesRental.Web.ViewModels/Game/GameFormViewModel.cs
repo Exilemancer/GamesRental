@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using static GamesRental.GCommon.ValidationConstants;
+using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
 
-namespace GamesRental.Web.Areas.Admin.ViewModels
+namespace GamesRental.Web.ViewModels.Game
 {
-    public class GameCreateViewModel
+    public class GameFormViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [MinLength(GameTitleMinLength)]
         [MaxLength(GameTitleMaxLength)]
@@ -30,7 +32,7 @@ namespace GamesRental.Web.Areas.Admin.ViewModels
         public int PlatformId { get; set; }
 
         [Required]
-        [Range(1, 100)]
+        [Range(GameTotalCopiesMinValue, GameTotalCopiesMaxValue)]
         [Display(Name = "Total Copies")]
         public int TotalCopies { get; set; }
 

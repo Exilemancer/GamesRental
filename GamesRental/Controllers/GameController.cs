@@ -1,8 +1,10 @@
 ﻿using GamesRental.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesRental.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GameController : Controller
     {
         private readonly IGameService _gameService;
@@ -18,12 +20,14 @@ namespace GamesRental.Web.Controllers
             return View(games);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var game = await _gameService.GetGameDetailsByIdAsync(id);
-            if (game == null) return NotFound();
-            return View(game);
-        }
+            var model = await _gameService.GetGameDetailsByIdAsync(id, User);
+            if (model == null)
+                return NotFound();
 
+            return View(model);
+        }
     }
 }

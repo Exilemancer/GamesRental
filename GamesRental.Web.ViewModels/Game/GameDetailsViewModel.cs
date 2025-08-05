@@ -16,6 +16,8 @@
 
         public DateTime ReleaseDate { get; set; }
 
-        public List<GameReviewViewModel> Reviews { get; set; } = new();
+        public bool HasUserRented { get; set; }
+
+        public bool IsInWishlist { get; set; }
     }
 }
