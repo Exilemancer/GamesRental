@@ -21,7 +21,7 @@ namespace GamesRental.Data.Models
         [ForeignKey(nameof(GameId))]
         public virtual Game Game { get; set; } = null!;
 
-        [Range(1, 5)]
+        [Range(ReviewRatingMinValue, ReviewRatingMaxValue)]
         public int Rating { get; set; }
 
         [MaxLength(ReviewContentMaxLength)]

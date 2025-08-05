@@ -1,5 +1,4 @@
-﻿using GamesRental.Data;
-using GamesRental.Services.Contracts;
+﻿using GamesRental.Services.Contracts;
 using GamesRental.Web.ViewModels.Game;
 using Microsoft.EntityFrameworkCore;
 

@@ -10,7 +10,7 @@ namespace GamesRental.Data.Models
 
         [Required]
         [MaxLength(GenreNameMaxLength)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         public virtual ICollection<Game> Games { get; set; } = new HashSet<Game>();
     }

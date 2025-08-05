@@ -25,7 +25,7 @@
                             <a class="nav-link" asp-controller="Game" asp-action="Catalog">Catalog</a>
                         </li>
 
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User?.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Rental" asp-action="MyGames">My Games</a>

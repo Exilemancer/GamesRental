@@ -1,5 +1,4 @@
-﻿using GamesRental.Data;
-using GamesRental.Data.Models;
+﻿using GamesRental.Data.Models;
 using GamesRental.Services.Contracts;
 using GamesRental.Web.ViewModels.Wishlist;
 using Microsoft.EntityFrameworkCore;
