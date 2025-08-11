@@ -1,9 +1,10 @@
-﻿using GamesRental.Data.Models;
+﻿using System.Threading.Tasks;
+using GamesRental.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace GamesRental.Areas.Identity.Pages.Account
+namespace GamesRental.Web.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {
@@ -14,10 +15,18 @@ namespace GamesRental.Areas.Identity.Pages.Account
             _signInManager = signInManager;
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
-            return RedirectToPage("/Account/Login");
+
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
         }
     }
 }

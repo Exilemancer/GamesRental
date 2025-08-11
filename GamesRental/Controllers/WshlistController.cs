@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-[Authorize(Roles = "User")]
+
 public class WishlistController : Controller
 {
     private readonly IWishlistService wishlistService;

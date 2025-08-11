@@ -1,9 +1,13 @@
 namespace GamesRental.Web.Controllers
 {
     using System.Diagnostics;
+    using System.Web.Mvc;
+    using BookVerse.Web.Controllers;
     using GamesRental.Web.ViewModels;
     using Microsoft.AspNetCore.Mvc;
-    public class HomeController : Controller
+
+    
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
