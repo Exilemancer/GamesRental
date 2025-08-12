@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace GamesRental.Web.Controllers
 {
-   
+    [Authorize]
     public class RentalController : Controller
     {
         private readonly IRentalService _rentalService;

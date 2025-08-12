@@ -1,29 +1,25 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using GamesRental.Data;
-using GamesRental.Data.Models;
-using GamesRental.Data.Seeding.Input;
-using GamesRental.Services;
-using GamesRental.Services.Contracts;
-
 namespace GamesRental.Web
 {
+    using GamesRental.Data;
+    using GamesRental.Data.Models;
+    using GamesRental.Data.Seeding.Input;
+    using GamesRental.Services;
+    using GamesRental.Services.Contracts;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     public class Program
     {
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // --- Database ---
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
+            // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // --- Identity + Roles ---
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
@@ -36,34 +32,28 @@ namespace GamesRental.Web
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredUniqueChars = 0;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            // --- MVC + Razor Pages ---
             builder.Services.AddControllersWithViews();
-            builder.Services.AddRazorPages();
 
-            // --- Services ---
             builder.Services.AddScoped<IGameService, GameService>();
             builder.Services.AddScoped<IRentalService, RentalService>();
             builder.Services.AddScoped<IWishlistService, WishlistService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
 
+            builder.Services.AddRazorPages();
+
+
             var app = builder.Build();
 
-            // --- Seed Data & Roles ---
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
-                // Seed базови данни
                 await DbSeeder.SeedAsync(services);
+            }            
 
-                // Seed роли и админ
-                await SeedRolesAndAdminAsync(services);
-            }
-
-            // --- Middleware ---
+            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -71,6 +61,7 @@ namespace GamesRental.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -82,7 +73,6 @@ namespace GamesRental.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // --- Routes ---
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -90,38 +80,44 @@ namespace GamesRental.Web
             app.MapRazorPages();
 
             app.Run();
-        }
 
-        private static async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-            string[] roleNames = { "Admin", "User" };
-
-            foreach (var roleName in roleNames)
+            using (var scope = app.Services.CreateScope())
             {
-                if (!await roleManager.RoleExistsAsync(roleName))
-                {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
+                var services = scope.ServiceProvider;
+                await SeedRolesAndAdminAsync(services);
             }
 
-            var adminEmail = "admin@site.com";
-            var adminPassword = "Admin123!";
-
-            if (await userManager.FindByEmailAsync(adminEmail) == null)
+            async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
             {
-                var adminUser = new ApplicationUser
-                {
-                    UserName = adminEmail,
-                    Email = adminEmail
-                };
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-                var result = await userManager.CreateAsync(adminUser, adminPassword);
-                if (result.Succeeded)
+                string[] roleNames = { "Admin", "User" };
+
+                foreach (var roleName in roleNames)
                 {
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    if (!await roleManager.RoleExistsAsync(roleName))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(roleName));
+                    }
+                }
+                
+                var adminEmail = "admin@site.com";
+                var adminPassword = "Admin123!";
+
+                if (await userManager.FindByEmailAsync(adminEmail) == null)
+                {
+                    var adminUser = new ApplicationUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail
+                    };
+
+                    var result = await userManager.CreateAsync(adminUser, adminPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
+                    }
                 }
             }
         }

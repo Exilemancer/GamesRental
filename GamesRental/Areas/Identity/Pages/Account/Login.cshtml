@@ -1,13 +1,13 @@
 ﻿@page
-@model GamesRental.Web.Areas.Identity.Pages.Account.LoginModel
+@model GamesRental.Areas.Identity.Pages.Account.LoginModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Login";
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <form method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="form-group">
         <label asp-for="Input.Email"></label>
@@ -21,10 +21,14 @@
         <span asp-validation-for="Input.Password" class="text-danger"></span>
     </div>
 
-    <div class="form-group form-check">
+    <div class="form-check mb-3">
         <input asp-for="Input.RememberMe" class="form-check-input" />
         <label asp-for="Input.RememberMe" class="form-check-label"></label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Log in</button>
+    <button type="submit" class="btn btn-primary">Login</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
