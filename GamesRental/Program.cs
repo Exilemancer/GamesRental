@@ -20,22 +20,22 @@ namespace GamesRental.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 3;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 0;
-            })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+			builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+			{
+				options.SignIn.RequireConfirmedEmail = false;
+				options.SignIn.RequireConfirmedAccount = false;
+				options.SignIn.RequireConfirmedPhoneNumber = false;
+				options.Password.RequireDigit = false;
+				options.Password.RequiredLength = 3;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = false;
+				options.Password.RequiredUniqueChars = 0;
+			})
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            builder.Services.AddControllersWithViews();
+			builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<IGameService, GameService>();
             builder.Services.AddScoped<IRentalService, RentalService>();
@@ -79,13 +79,13 @@ namespace GamesRental.Web
 
             app.MapRazorPages();
 
-            app.Run();
+			using (var scope = app.Services.CreateScope())
+			{
+				var services = scope.ServiceProvider;
+				await SeedRolesAndAdminAsync(services);
+			}
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                await SeedRolesAndAdminAsync(services);
-            }
+			app.Run();            
 
             async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
             {

@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesRental.Web.Controllers
-{
-    [Authorize(Roles = "Admin")]
+{    
     public class GameController : Controller
     {
         private readonly IGameService _gameService;
