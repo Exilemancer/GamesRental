@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace GamesRental.Web.Controllers
-{   
-    public class RentalController : Controller
+{
+	[Authorize]
+	public class RentalController : Controller
     {
         private readonly IRentalService _rentalService;
 

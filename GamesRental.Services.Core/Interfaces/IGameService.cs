@@ -10,5 +10,9 @@ namespace GamesRental.Services.Contracts
         Task<GameDetailsViewModel?> GetGameDetailsByIdAsync(int id, ClaimsPrincipal user);
 
         Task<GameDetailsViewModel?> GetDetailsAsync(int id, ClaimsPrincipal user);
-    }
+
+		Task DeleteAsync(int id);
+
+		Task<IEnumerable<GameFormViewModel>> GetAllAsync();
+	}
 }

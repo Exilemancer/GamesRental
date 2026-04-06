@@ -1,0 +1,24 @@
+﻿@using GamesRental.Web.ViewModels.Game
+@model IEnumerable<GameFormViewModel>
+
+<h2>Manage Games</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>@game.Title</td>
+                <td>
+                    <a asp-area="Admin" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

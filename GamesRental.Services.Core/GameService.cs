@@ -109,5 +109,26 @@ namespace GamesRental.Services
                 IsInWishlist = isInWishlist
             };
         }
-    }
+
+		public async Task DeleteAsync(int id)
+		{
+			var game = await _context.Games.FindAsync(id);
+			if (game != null)
+			{
+				_context.Games.Remove(game);
+				await _context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<IEnumerable<GameFormViewModel>> GetAllAsync()
+		{
+			return await _context.Games
+				.Select(g => new GameFormViewModel
+				{
+					Id = g.Id,
+					Title = g.Title
+				})
+				.ToListAsync();
+		}
+	}
 }

@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace GamesRental.Web.Controllers
-{    
-    public class ReviewController : Controller
+{
+	[Authorize]
+	public class ReviewController : Controller
     {
         private readonly IReviewService _reviewService;
 
