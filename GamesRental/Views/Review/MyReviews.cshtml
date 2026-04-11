@@ -1,0 +1,25 @@
+﻿@model IEnumerable<GamesRental.Web.ViewModels.Review.MyReviewViewModel>
+
+<h2>My Reviews</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Game</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Created On</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.GameTitle</td>
+                <td>@review.Rating</td>
+                <td>@(string.IsNullOrWhiteSpace(review.Comment) ? "No comment" : review.Comment)</td>
+                <td>@review.CreatedOn.ToLocalTime().ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>

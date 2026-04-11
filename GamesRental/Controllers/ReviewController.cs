@@ -6,8 +6,8 @@ using System.Security.Claims;
 
 namespace GamesRental.Web.Controllers
 {
-	[Authorize]
-	public class ReviewController : Controller
+    [Authorize]
+    public class ReviewController : Controller
     {
         private readonly IReviewService _reviewService;
 
@@ -40,16 +40,23 @@ namespace GamesRental.Web.Controllers
                 return View(model);
 
             var success = await _reviewService.AddReviewAsync(model, userId);
+
             if (!success)
-            {
                 TempData["Error"] = "You have already reviewed this game.";
-            }
             else
-            {
                 TempData["Success"] = "Review added successfully.";
-            }
 
             return RedirectToAction("Details", "Game", new { id = model.GameId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyReviews()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var reviews = await _reviewService.GetUserReviewsAsync(userId);
+
+            return View(reviews);
         }
     }
 }

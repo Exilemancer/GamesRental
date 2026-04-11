@@ -47,6 +47,8 @@ namespace GamesRental.Services
 
             bool hasUserRented = false;
             bool isInWishlist = false;
+            bool hasAvailableCopies = await _context.GameCopies
+                .AnyAsync(gc => gc.GameId == id && !gc.IsRented);
 
             if (!string.IsNullOrEmpty(userId))
             {
@@ -66,6 +68,7 @@ namespace GamesRental.Services
                 Genre = game.Genre.Name,
                 Platform = game.Platform.Name,
                 ReleaseDate = game.ReleaseDate,
+                HasAvailableCopies = hasAvailableCopies,
                 HasUserRented = hasUserRented,
                 IsInWishlist = isInWishlist
             };

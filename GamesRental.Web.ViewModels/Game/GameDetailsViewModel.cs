@@ -16,6 +16,8 @@
 
         public DateTime ReleaseDate { get; set; }
 
+        public bool HasAvailableCopies { get; set; }
+
         public bool HasUserRented { get; set; }
 
         public bool IsInWishlist { get; set; }

@@ -37,5 +37,20 @@ namespace GamesRental.Services
         {
             return await _context.Reviews.AnyAsync(r => r.GameId == gameId && r.UserId == userId);
         }
+
+        public async Task<IEnumerable<MyReviewViewModel>> GetUserReviewsAsync(string userId)
+        {
+            return await _context.Reviews
+                .Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.CreatedOn)
+                .Select(r => new MyReviewViewModel
+                {
+                    GameTitle = r.Game.Title,
+                    Rating = r.Rating,
+                    Comment = r.Comment,
+                    CreatedOn = r.CreatedOn
+                })
+                .ToListAsync();
+        }
     }
 }

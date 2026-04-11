@@ -21,20 +21,20 @@
         {
             <div class="mt-3">
 
-                @if (Model.HasUserRented && !Model.HasUserRented)
+                @if (Model.HasUserRented)
+                {
+                    <div class="alert alert-info">You already have an active rental for this game.</div>
+                }
+                else if (Model.HasAvailableCopies)
                 {
                     <form asp-controller="Rental" asp-action="Rent" method="post" class="d-inline">
                         <input type="hidden" name="gameId" value="@Model.Id" />
                         <button type="submit" class="btn btn-primary">Rent this Game</button>
                     </form>
                 }
-                else if (Model.HasUserRented)
+                else
                 {
                     <div class="alert alert-warning">No available copies right now.</div>
-                }
-                else if (Model.HasUserRented)
-                {
-                    <div class="alert alert-info">You have already rented this game.</div>
                 }
 
                 <form asp-controller="Wishlist" asp-action="@(Model.IsInWishlist ? "Remove" : "Add")" method="post" class="d-inline ms-2">
