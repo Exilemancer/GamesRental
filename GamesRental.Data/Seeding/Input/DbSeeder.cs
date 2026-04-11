@@ -32,10 +32,15 @@ namespace GamesRental.Data.Seeding.Input
                 };
 
                 var result = await userManager.CreateAsync(adminUser, adminPassword);
-                if (result.Succeeded)
+                if (!result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    return;
                 }
+            }
+
+            if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
             }
         }
     }

@@ -1,14 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
+using GamesRental.Data.Models;
+using GamesRental.Web.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 [Area("Admin")]
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class HomeController : Controller
 {
-	public IActionResult Index()
-	{
-		return View();
-	}
-}
+    private readonly UserManager<ApplicationUser> _userManager;
 
+    public HomeController(UserManager<ApplicationUser> userManager)
+    {
+        _userManager = userManager;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        if (!await User.IsAdminAsync(_userManager))
+        {
+            return Forbid();
+        }
+
+        return View();
+    }
+}

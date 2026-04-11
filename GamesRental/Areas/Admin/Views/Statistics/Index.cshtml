@@ -1,0 +1,18 @@
+@model GamesRental.Web.Areas.Admin.ViewModels.StatisticsIndexViewModel
+
+@{
+    ViewData["Title"] = "Statistics";
+}
+
+<h2>Statistics</h2>
+
+<div class="row g-3">
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Games</h5><p class="fs-4 mb-0">@Model.TotalGames</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Genres</h5><p class="fs-4 mb-0">@Model.TotalGenres</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Platforms</h5><p class="fs-4 mb-0">@Model.TotalPlatforms</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Copies</h5><p class="fs-4 mb-0">@Model.TotalCopies</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Available Copies</h5><p class="fs-4 mb-0">@Model.AvailableCopies</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Rented Copies</h5><p class="fs-4 mb-0">@Model.RentedCopies</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Reviews</h5><p class="fs-4 mb-0">@Model.TotalReviews</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Wishlist Entries</h5><p class="fs-4 mb-0">@Model.WishlistEntries</p></div></div></div>
+</div>

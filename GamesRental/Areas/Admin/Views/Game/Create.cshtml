@@ -1,0 +1,17 @@
+@model GamesRental.Web.ViewModels.Game.GameFormViewModel
+
+@{
+    ViewData["Title"] = "Add New Game";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-area="Admin" asp-controller="Game" asp-action="Create" method="post">
+    <partial name="~/Views/Shared/_GameFormPartial.cshtml" model="Model" />
+    <button type="submit" class="btn btn-success">Create</button>
+    <a asp-area="Admin" asp-controller="Game" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

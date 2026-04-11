@@ -1,5 +1,7 @@
-﻿using GamesRental.Services.Contracts;
+using GamesRental.Data.Models;
+using GamesRental.Services.Contracts;
 using GamesRental.Web.ViewModels.Game;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -14,24 +16,24 @@ namespace GamesRental.Services
             _context = context;
         }
 
-		public async Task<IEnumerable<GameCatalogViewModel>> GetAllAvailableAsync()
-		{
-			return await _context.Games
-				.Include(g => g.Genre)
-				.Include(g => g.Platform)
-				.Include(g => g.Copies)
-				.Where(g => g.Copies.Any(c => !c.IsRented))
-				.Select(g => new GameCatalogViewModel
-				{
-					Id = g.Id,
-					Title = g.Title,
-					ImageUrl = g.ImageUrl,
-					Genre = g.Genre.Name,
-					Platform = g.Platform.Name,
-					AvailableCopies = g.Copies.Count(c => !c.IsRented)
-				})
-				.ToListAsync();
-		}
+        public async Task<IEnumerable<GameCatalogViewModel>> GetAllAvailableAsync()
+        {
+            return await _context.Games
+                .Include(g => g.Genre)
+                .Include(g => g.Platform)
+                .Include(g => g.Copies)
+                .Where(g => g.Copies.Any(c => !c.IsRented))
+                .Select(g => new GameCatalogViewModel
+                {
+                    Id = g.Id,
+                    Title = g.Title,
+                    ImageUrl = g.ImageUrl,
+                    Genre = g.Genre.Name,
+                    Platform = g.Platform.Name,
+                    AvailableCopies = g.Copies.Count(c => !c.IsRented)
+                })
+                .ToListAsync();
+        }
 
         public async Task<GameDetailsViewModel?> GetByIdAsync(int id, ClaimsPrincipal user)
         {
@@ -41,7 +43,9 @@ namespace GamesRental.Services
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if (game == null)
+            {
                 return null;
+            }
 
             string? userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -75,14 +79,14 @@ namespace GamesRental.Services
         }
 
         public async Task DeleteAsync(int id)
-		{
-			var game = await _context.Games.FindAsync(id);
-			if (game != null)
-			{
-				_context.Games.Remove(game);
-				await _context.SaveChangesAsync();
-			}
-		}
+        {
+            var game = await _context.Games.FindAsync(id);
+            if (game != null)
+            {
+                _context.Games.Remove(game);
+                await _context.SaveChangesAsync();
+            }
+        }
 
         public async Task<IEnumerable<GameAdminViewModel>> GetAllForAdminAsync()
         {
@@ -93,6 +97,65 @@ namespace GamesRental.Services
                     Title = g.Title
                 })
                 .ToListAsync();
+        }
+
+        public async Task<GameFormViewModel> GetCreateFormModelAsync()
+        {
+            return await PopulateCreateFormModelAsync(new GameFormViewModel
+            {
+                ReleaseDate = DateTime.UtcNow.Date,
+                TotalCopies = 1
+            });
+        }
+
+        public async Task<GameFormViewModel> PopulateCreateFormModelAsync(GameFormViewModel model)
+        {
+            model.Genres = await _context.Genres
+                .OrderBy(g => g.Name)
+                .Select(g => new SelectListItem
+                {
+                    Value = g.Id.ToString(),
+                    Text = g.Name
+                })
+                .ToListAsync();
+
+            model.Platforms = await _context.Platforms
+                .OrderBy(p => p.Name)
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.Name
+                })
+                .ToListAsync();
+
+            return model;
+        }
+
+        public async Task CreateAsync(GameFormViewModel model)
+        {
+            var game = new Game
+            {
+                Title = model.Title,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                GenreId = model.GenreId,
+                PlatformId = model.PlatformId,
+                ReleaseDate = model.ReleaseDate,
+                TotalCopies = model.TotalCopies
+            };
+
+            _context.Games.Add(game);
+            await _context.SaveChangesAsync();
+
+            var copies = Enumerable.Range(0, model.TotalCopies)
+                .Select(_ => new GameCopy
+                {
+                    GameId = game.Id,
+                    IsRented = false
+                });
+
+            _context.GameCopies.AddRange(copies);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model GamesRental.Web.ViewModels.Game.GameFormViewModel
+@model GamesRental.Web.ViewModels.Game.GameFormViewModel
 
 <div class="mb-3">
     <label asp-for="Title" class="form-label"></label>
@@ -34,4 +34,10 @@
     <label asp-for="ReleaseDate" class="form-label"></label>
     <input asp-for="ReleaseDate" class="form-control" type="date" />
     <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="TotalCopies" class="form-label"></label>
+    <input asp-for="TotalCopies" class="form-control" />
+    <span asp-validation-for="TotalCopies" class="text-danger"></span>
 </div>

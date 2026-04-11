@@ -1,0 +1,41 @@
+@model IEnumerable<GamesRental.Data.Models.Platform>
+
+@{
+    ViewData["Title"] = "Manage Platforms";
+}
+
+<h2>Manage Platforms</h2>
+
+<form asp-area="Admin" asp-controller="Platform" asp-action="Create" method="post" class="row g-2 mb-3">
+    @Html.AntiForgeryToken()
+    <div class="col-sm-8 col-md-6">
+        <input name="name" class="form-control" placeholder="Platform name" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-success">Add Platform</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var platform in Model)
+        {
+            <tr>
+                <td>@platform.Name</td>
+                <td>
+                    <form asp-area="Admin" asp-controller="Platform" asp-action="Delete" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@platform.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

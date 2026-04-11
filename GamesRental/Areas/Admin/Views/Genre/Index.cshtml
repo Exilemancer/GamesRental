@@ -1,0 +1,41 @@
+@model IEnumerable<GamesRental.Data.Models.Genre>
+
+@{
+    ViewData["Title"] = "Manage Genres";
+}
+
+<h2>Manage Genres</h2>
+
+<form asp-area="Admin" asp-controller="Genre" asp-action="Create" method="post" class="row g-2 mb-3">
+    @Html.AntiForgeryToken()
+    <div class="col-sm-8 col-md-6">
+        <input name="name" class="form-control" placeholder="Genre name" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-success">Add Genre</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genre in Model)
+        {
+            <tr>
+                <td>@genre.Name</td>
+                <td>
+                    <form asp-area="Admin" asp-controller="Genre" asp-action="Delete" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@genre.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

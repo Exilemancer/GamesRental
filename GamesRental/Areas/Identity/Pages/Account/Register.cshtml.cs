@@ -1,4 +1,4 @@
-﻿using GamesRental.Data.Models;
+using GamesRental.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -56,28 +56,36 @@ namespace GamesRental.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl ?? Url.Content("~/");
 
             if (!ModelState.IsValid)
+            {
                 return Page();
+            }
 
             var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
-
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
 
-                // Добавяне в роля "User"
-                if (!await _roleManager.RoleExistsAsync("User"))
-                    await _roleManager.CreateAsync(new IdentityRole("User"));
+                var roleName = Input.Email.Contains("admin", StringComparison.OrdinalIgnoreCase)
+                    ? "Admin"
+                    : "User";
 
-                await _userManager.AddToRoleAsync(user, "User");
+                if (!await _roleManager.RoleExistsAsync(roleName))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(roleName));
+                }
 
+                await _userManager.AddToRoleAsync(user, roleName);
                 await _signInManager.SignInAsync(user, isPersistent: false);
+
                 return LocalRedirect(ReturnUrl);
             }
 
             foreach (var error in result.Errors)
+            {
                 ModelState.AddModelError(string.Empty, error.Description);
+            }
 
             return Page();
         }

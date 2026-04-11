@@ -1,24 +1,39 @@
-﻿@using GamesRental.Web.ViewModels.Game
-@model IEnumerable<GameFormViewModel>
+@model IEnumerable<GamesRental.Data.Models.Game>
+
+@{
+	ViewData["Title"] = "Manage Games";
+}
 
 <h2>Manage Games</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var game in Model)
-        {
-            <tr>
-                <td>@game.Title</td>
-                <td>
-                    <a asp-area="Admin" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+<a asp-area="Admin" asp-controller="Game" asp-action="Create" class="btn btn-success mb-3">+ Add New Game</a>
+
+<table class="table table-bordered table-striped">
+	<thead class="thead-dark">
+		<tr>
+			<th>Image</th>
+			<th>Title</th>
+			<th>Genre</th>
+			<th>Platform</th>
+			<th>Release Date</th>
+			<th>Total Copies</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var game in Model)
+		{
+			<tr>
+				<td><img src="@game.ImageUrl" alt="@game.Title" style="height: 60px;" /></td>
+				<td>@game.Title</td>
+				<td>@game.Genre?.Name</td>
+				<td>@game.Platform?.Name</td>
+				<td>@game.ReleaseDate.ToShortDateString()</td>
+				<td>@game.TotalCopies</td>
+				<td>
+					<a asp-area="Admin" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-sm btn-danger">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

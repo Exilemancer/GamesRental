@@ -1,3 +1,39 @@
-﻿@{
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-0">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <div>
+            <h1 class="h3 mb-1">Admin Area</h1>
+            <p class="text-muted mb-0">Management pages for games, genres, platforms and statistics.</p>
+        </div>
+        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Dashboard</a>
+    </div>
+
+    <div class="mb-3">
+        <div class="small text-uppercase text-muted fw-semibold mb-2">Admin</div>
+        <ul class="nav nav-pills gap-2">
+            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Game" asp-action="Index">Games</a></li>
+            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Genre" asp-action="Index">Genres</a></li>
+            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Platform" asp-action="Index">Platforms</a></li>
+            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
+        </ul>
+    </div>
+
+    <div class="mb-4">
+        <div class="small text-uppercase text-muted fw-semibold mb-2">User Actions</div>
+        <ul class="nav nav-tabs gap-2">
+            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Game" asp-action="Catalog">Catalog</a></li>
+            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Rental" asp-action="MyGames">My Games</a></li>
+            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Wishlist" asp-action="Index">Wishlist</a></li>
+            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Review" asp-action="MyReviews">My Reviews</a></li>
+        </ul>
+    </div>
+
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
 }
