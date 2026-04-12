@@ -1,6 +1,7 @@
 using GamesRental.Data.Models;
 using GamesRental.Services.Contracts;
 using GamesRental.Web.ViewModels.Game;
+using GamesRental.Web.ViewModels.Review;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -40,6 +41,8 @@ namespace GamesRental.Services
             var game = await _context.Games
                 .Include(g => g.Genre)
                 .Include(g => g.Platform)
+                .Include(g => g.Reviews)
+                    .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if (game == null)
@@ -74,7 +77,17 @@ namespace GamesRental.Services
                 ReleaseDate = game.ReleaseDate,
                 HasAvailableCopies = hasAvailableCopies,
                 HasUserRented = hasUserRented,
-                IsInWishlist = isInWishlist
+                IsInWishlist = isInWishlist,
+                Reviews = game.Reviews
+                    .OrderByDescending(r => r.CreatedOn)
+                    .Select(r => new GameReviewListItemViewModel
+                    {
+                        Author = r.User.Email ?? r.User.UserName ?? "Anonymous",
+                        Rating = r.Rating,
+                        Comment = r.Comment,
+                        CreatedOn = r.CreatedOn
+                    })
+                    .ToList()
             };
         }
 

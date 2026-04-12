@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using GamesRental.GCommon;
 
 namespace GamesRental.Web.ViewModels.Review
 {
@@ -8,11 +9,11 @@ namespace GamesRental.Web.ViewModels.Review
         public int GameId { get; set; }
 
         [Required]
-        [Range(1, 5)]
+        [Range(ValidationConstants.ReviewRatingMinValue, ValidationConstants.ReviewRatingMaxValue)]
         public int Rating { get; set; }
 
         [Required]
-        [StringLength(500)]
-        public string Comment { get; set; }
+        [StringLength(ValidationConstants.ReviewContentMaxLength)]
+        public string Comment { get; set; } = null!;
     }
 }

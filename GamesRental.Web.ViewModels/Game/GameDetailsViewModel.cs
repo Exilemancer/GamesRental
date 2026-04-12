@@ -1,4 +1,6 @@
-﻿namespace GamesRental.Web.ViewModels.Game
+using GamesRental.Web.ViewModels.Review;
+
+namespace GamesRental.Web.ViewModels.Game
 {
     public class GameDetailsViewModel
     {
@@ -21,5 +23,7 @@
         public bool HasUserRented { get; set; }
 
         public bool IsInWishlist { get; set; }
+
+        public IEnumerable<GameReviewListItemViewModel> Reviews { get; set; } = new List<GameReviewListItemViewModel>();
     }
 }

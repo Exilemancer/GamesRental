@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+    <PackageReference Include="Microsoft.Build" Version="18.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GamesRental.Data.Models\GamesRental.Data.Models.csproj" />
     <ProjectReference Include="..\GamesRental.Data\GamesRental.Data.csproj" />
     <ProjectReference Include="..\GamesRental.GCommon\GamesRental.GCommon.csproj" />

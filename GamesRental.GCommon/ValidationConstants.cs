@@ -21,6 +21,6 @@
         // Review
         public const int ReviewContentMaxLength = 1000;
         public const int ReviewRatingMinValue = 1;
-        public const int ReviewRatingMaxValue = 5;
+        public const int ReviewRatingMaxValue = 10;
     }
 }

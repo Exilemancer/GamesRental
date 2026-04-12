@@ -13,7 +13,7 @@
         <label asp-for="Rating" class="form-label"></label>
         <select asp-for="Rating" class="form-select">
             <option value="">-- Select rating --</option>
-            @for (int i = 1; i <= 5; i++)
+            @for (int i = 1; i <= 10; i++)
             {
                 <option value="@i">@i</option>
             }
