@@ -17,13 +17,36 @@ namespace GamesRental.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<GameCatalogViewModel>> GetAllAvailableAsync()
+        public async Task<GameCatalogPageViewModel> GetAllAvailableAsync(string? searchTerm, int currentPage, int gamesPerPage)
         {
-            return await _context.Games
+            currentPage = currentPage < 1 ? 1 : currentPage;
+            searchTerm = searchTerm?.Trim();
+
+            var gamesQuery = _context.Games
                 .Include(g => g.Genre)
                 .Include(g => g.Platform)
                 .Include(g => g.Copies)
                 .Where(g => g.Copies.Any(c => !c.IsRented))
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var normalizedSearch = searchTerm.ToLower();
+                gamesQuery = gamesQuery.Where(g =>
+                    g.Title.ToLower().Contains(normalizedSearch)
+                    || g.Genre.Name.ToLower().Contains(normalizedSearch)
+                    || g.Platform.Name.ToLower().Contains(normalizedSearch));
+            }
+
+            var totalGames = await gamesQuery.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalGames / (double)gamesPerPage);
+            totalPages = totalPages == 0 ? 1 : totalPages;
+            currentPage = currentPage > totalPages ? totalPages : currentPage;
+
+            var games = await gamesQuery
+                .OrderBy(g => g.Title)
+                .Skip((currentPage - 1) * gamesPerPage)
+                .Take(gamesPerPage)
                 .Select(g => new GameCatalogViewModel
                 {
                     Id = g.Id,
@@ -34,6 +57,15 @@ namespace GamesRental.Services
                     AvailableCopies = g.Copies.Count(c => !c.IsRented)
                 })
                 .ToListAsync();
+
+            return new GameCatalogPageViewModel
+            {
+                Games = games,
+                SearchTerm = searchTerm ?? string.Empty,
+                CurrentPage = currentPage,
+                TotalPages = totalPages,
+                TotalGames = totalGames
+            };
         }
 
         public async Task<GameDetailsViewModel?> GetByIdAsync(int id, ClaimsPrincipal user)

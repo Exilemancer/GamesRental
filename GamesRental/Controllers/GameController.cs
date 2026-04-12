@@ -11,9 +11,11 @@ public class GameController : Controller
     }
 
     [AllowAnonymous]
-    public async Task<IActionResult> Catalog()
+    public async Task<IActionResult> Catalog(string? searchTerm, int currentPage = 1)
     {
-        var games = await _gameService.GetAllAvailableAsync();
+        const int GamesPerPage = 6;
+
+        var games = await _gameService.GetAllAvailableAsync(searchTerm, currentPage, GamesPerPage);
         return View(games);
     }
 

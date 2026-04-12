@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 public interface IGameService
 {
-    Task<IEnumerable<GameCatalogViewModel>> GetAllAvailableAsync();
+    Task<GameCatalogPageViewModel> GetAllAvailableAsync(string? searchTerm, int currentPage, int gamesPerPage);
 
     Task<GameDetailsViewModel?> GetByIdAsync(int id, ClaimsPrincipal user);
 
