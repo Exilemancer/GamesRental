@@ -16,6 +16,7 @@ namespace GamesRental.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Rent(int gameId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -39,6 +40,7 @@ namespace GamesRental.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Return(int rentalId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

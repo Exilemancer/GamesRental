@@ -1,0 +1,22 @@
+@model GamesRental.Web.ViewModels.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Server Error";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-5 text-danger">500</h1>
+    <h2 class="mb-3">Internal Server Error</h2>
+    <p class="lead text-muted">
+        Something went wrong while processing your request.
+    </p>
+
+    @if (Model?.ShowRequestId == true)
+    {
+        <p class="text-muted">
+            Request ID: <code>@Model.RequestId</code>
+        </p>
+    }
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Back to Home</a>
+</div>

@@ -14,6 +14,7 @@ public class WishlistController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(int gameId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -22,6 +23,7 @@ public class WishlistController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Remove(int gameId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

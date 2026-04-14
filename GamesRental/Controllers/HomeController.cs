@@ -22,10 +22,26 @@ namespace GamesRental.Web.Controllers
             return View();
         }
 
+        [Route("Home/StatusCode")]
+        public IActionResult StatusCode(int code)
+        {
+            return code switch
+            {
+                404 => View("Error404"),
+                500 => View("Error500"),
+                _ => View("Error")
+            };
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            Response.StatusCode = 500;
+
+            return View("Error500", new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }

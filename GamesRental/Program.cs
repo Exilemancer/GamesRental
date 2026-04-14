@@ -66,6 +66,7 @@ namespace GamesRental.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseStatusCodePagesWithReExecute("/Home/StatusCode", "?code={0}");
             app.UseAuthentication();
             app.UseAuthorization();
 
