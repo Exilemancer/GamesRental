@@ -7,12 +7,157 @@
 <h2>Statistics</h2>
 
 <div class="row g-3">
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Users</h5><p class="fs-4 mb-0">@Model.TotalUsers</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Games</h5><p class="fs-4 mb-0">@Model.TotalGames</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Genres</h5><p class="fs-4 mb-0">@Model.TotalGenres</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Platforms</h5><p class="fs-4 mb-0">@Model.TotalPlatforms</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Copies</h5><p class="fs-4 mb-0">@Model.TotalCopies</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Available Copies</h5><p class="fs-4 mb-0">@Model.AvailableCopies</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Rented Copies</h5><p class="fs-4 mb-0">@Model.RentedCopies</p></div></div></div>
+    <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Rentals</h5><p class="fs-4 mb-0">@Model.TotalRentals</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Total Reviews</h5><p class="fs-4 mb-0">@Model.TotalReviews</p></div></div></div>
     <div class="col-md-3"><div class="card"><div class="card-body"><h5>Wishlist Entries</h5><p class="fs-4 mb-0">@Model.WishlistEntries</p></div></div></div>
+</div>
+
+<div class="mt-5">
+    <h3 class="mb-3">By Game</h3>
+
+    @if (!Model.GameStatistics.Any())
+    {
+        <div class="alert alert-info">No rental history is available yet.</div>
+    }
+    else
+    {
+        <div class="accordion" id="gameStatisticsAccordion">
+            @for (var i = 0; i < Model.GameStatistics.Count(); i++)
+            {
+                var game = Model.GameStatistics.ElementAt(i);
+                var collapseId = $"game-stat-{game.GameId}";
+                var headingId = $"game-heading-{game.GameId}";
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="@headingId">
+                        <button class="accordion-button @(i == 0 ? string.Empty : "collapsed")" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                aria-expanded="@(i == 0 ? "true" : "false")" aria-controls="@collapseId">
+                            <span class="me-3 fw-semibold">@game.GameTitle</span>
+                            <span class="text-muted">@game.Platform</span>
+                            <span class="ms-auto small">
+                                Rentals: <strong>@game.TotalRentals</strong> |
+                                Active: <strong>@game.ActiveRentals</strong>
+                            </span>
+                        </button>
+                    </h2>
+                    <div id="@collapseId" class="accordion-collapse collapse @(i == 0 ? "show" : string.Empty)" aria-labelledby="@headingId" data-bs-parent="#gameStatisticsAccordion">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Rented On</th>
+                                            <th>Returned On</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var rental in game.RentalHistory)
+                                        {
+                                            <tr>
+                                                <td>@rental.UserEmail</td>
+                                                <td>@rental.RentedOn.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                                                <td>@(rental.ReturnedOn.HasValue ? rental.ReturnedOn.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm") : "Still rented")</td>
+                                                <td>
+                                                    @if (rental.ReturnedOn.HasValue)
+                                                    {
+                                                        <span class="badge bg-success">Returned</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning text-dark">Active</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div class="mt-5">
+    <h3 class="mb-3">By User</h3>
+
+    @if (!Model.UserStatistics.Any())
+    {
+        <div class="alert alert-info">No user rental activity is available yet.</div>
+    }
+    else
+    {
+        <div class="accordion" id="userStatisticsAccordion">
+            @for (var i = 0; i < Model.UserStatistics.Count(); i++)
+            {
+                var user = Model.UserStatistics.ElementAt(i);
+                var collapseId = $"user-stat-{user.UserId}";
+                var headingId = $"user-heading-{user.UserId}";
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="@headingId">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                aria-expanded="false" aria-controls="@collapseId">
+                            <span class="me-3 fw-semibold">@user.Email</span>
+                            <span class="ms-auto small">
+                                Rentals: <strong>@user.TotalRentals</strong> |
+                                Active: <strong>@user.ActiveRentals</strong>
+                            </span>
+                        </button>
+                    </h2>
+                    <div id="@collapseId" class="accordion-collapse collapse" aria-labelledby="@headingId" data-bs-parent="#userStatisticsAccordion">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Game</th>
+                                            <th>Platform</th>
+                                            <th>Rented On</th>
+                                            <th>Returned On</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var rental in user.RentalHistory)
+                                        {
+                                            <tr>
+                                                <td>@rental.GameTitle</td>
+                                                <td>@rental.Platform</td>
+                                                <td>@rental.RentedOn.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                                                <td>@(rental.ReturnedOn.HasValue ? rental.ReturnedOn.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm") : "Still rented")</td>
+                                                <td>
+                                                    @if (rental.ReturnedOn.HasValue)
+                                                    {
+                                                        <span class="badge bg-success">Returned</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning text-dark">Active</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
