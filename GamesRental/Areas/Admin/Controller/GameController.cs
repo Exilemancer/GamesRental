@@ -95,6 +95,111 @@ public class GameController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> Edit(int id)
+    {
+        if (!await User.IsAdminAsync(_userManager))
+        {
+            return Forbid();
+        }
+
+        var game = await _context.Games
+            .AsNoTracking()
+            .FirstOrDefaultAsync(g => g.Id == id);
+
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        var model = new GameFormViewModel
+        {
+            Id = game.Id,
+            Title = game.Title,
+            Description = game.Description,
+            ImageUrl = game.ImageUrl,
+            GenreId = game.GenreId,
+            PlatformId = game.PlatformId,
+            ReleaseDate = game.ReleaseDate,
+            TotalCopies = game.TotalCopies,
+            Genres = await GetGenresAsync(),
+            Platforms = await GetPlatformsAsync()
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(GameFormViewModel model)
+    {
+        if (!await User.IsAdminAsync(_userManager))
+        {
+            return Forbid();
+        }
+
+        var game = await _context.Games
+            .Include(g => g.Copies)
+            .FirstOrDefaultAsync(g => g.Id == model.Id);
+
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            model.Genres = await GetGenresAsync();
+            model.Platforms = await GetPlatformsAsync();
+            return View(model);
+        }
+
+        game.Title = model.Title;
+        game.Description = model.Description;
+        game.ImageUrl = model.ImageUrl;
+        game.GenreId = model.GenreId;
+        game.PlatformId = model.PlatformId;
+        game.ReleaseDate = model.ReleaseDate;
+
+        var copyDifference = model.TotalCopies - game.TotalCopies;
+
+        if (copyDifference > 0)
+        {
+            var newCopies = Enumerable.Range(0, copyDifference)
+                .Select(_ => new GameCopy
+                {
+                    GameId = game.Id,
+                    IsRented = false
+                });
+
+            _context.GameCopies.AddRange(newCopies);
+        }
+        else if (copyDifference < 0)
+        {
+            var copiesToRemoveCount = Math.Abs(copyDifference);
+            var availableCopiesToRemove = game.Copies
+                .Where(c => !c.IsRented)
+                .Take(copiesToRemoveCount)
+                .ToList();
+
+            if (availableCopiesToRemove.Count < copiesToRemoveCount)
+            {
+                ModelState.AddModelError(nameof(model.TotalCopies), "You cannot reduce total copies below the number of currently rented copies.");
+                model.Genres = await GetGenresAsync();
+                model.Platforms = await GetPlatformsAsync();
+                return View(model);
+            }
+
+            _context.GameCopies.RemoveRange(availableCopiesToRemove);
+        }
+
+        game.TotalCopies = model.TotalCopies;
+
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = "Game updated successfully.";
+        return RedirectToAction(nameof(Index));
+    }
+
     public async Task<IActionResult> Delete(int id)
     {
         if (!await User.IsAdminAsync(_userManager))
