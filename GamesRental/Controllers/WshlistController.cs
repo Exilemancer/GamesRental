@@ -19,7 +19,7 @@ public class WishlistController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         await wishlistService.AddToWishlistAsync(gameId, userId);
-        return RedirectToAction("Catalog", "Game");
+        return RedirectToAction("Index", "Wishlist");
     }
 
     [HttpPost]
