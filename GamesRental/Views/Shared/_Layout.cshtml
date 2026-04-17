@@ -4,11 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     var currentUser = User.Identity?.IsAuthenticated == true ? await UserManager.GetUserAsync(User) : null;
-    var isAdmin = currentUser != null && (
-        await UserManager.IsInRoleAsync(currentUser, "Admin")
-        || (currentUser.Email?.Contains("admin", StringComparison.OrdinalIgnoreCase) ?? false)
-        || (currentUser.UserName?.Contains("admin", StringComparison.OrdinalIgnoreCase) ?? false)
-        || User.LooksLikeAdmin());
+    var isAdmin = currentUser != null && await UserManager.IsInRoleAsync(currentUser, "Admin");
 }
 <!DOCTYPE html>
 <html lang="en">

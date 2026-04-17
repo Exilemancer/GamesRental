@@ -67,9 +67,7 @@ namespace GamesRental.Areas.Identity.Pages.Account
             {
                 _logger.LogInformation("User created a new account with password.");
 
-                var roleName = Input.Email.Contains("admin", StringComparison.OrdinalIgnoreCase)
-                    ? "Admin"
-                    : "User";
+                const string roleName = "User";
 
                 if (!await _roleManager.RoleExistsAsync(roleName))
                 {

