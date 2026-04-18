@@ -143,6 +143,15 @@ dotnet run --project GamesRental
 - Email: `admin@site.com`
 - Password: `Admin123!`
 
+## User Roles
+
+The application supports two user roles:
+
+- `User` - can browse the catalog, rent and return games, maintain a wishlist, and create one review per game
+- `Admin` - has access to the Admin area and can manage games, genres, platforms, and statistics
+
+For coursework demonstration purposes, the default admin account is seeded automatically on startup.
+
 ## Repository and Deployment
 
 Source repository:
@@ -151,7 +160,9 @@ Source repository:
 
 Live deployment URL:
 
-- Add the public URL here after deployment
+- No public deployment is currently attached to the coursework submission.
+- The GitHub repository is used as the primary project reference:
+  [GamesRental on GitHub](https://github.com/Exilemancer/GamesRental)
 
 Suggested deployment targets:
 
@@ -161,8 +172,10 @@ Suggested deployment targets:
 
 ## Submission Checklist
 
-- Confirm all tests pass cleanly
-- Generate a coverage report for the services
-- Add the live deployment URL
-- Ensure the repository has at least 30 meaningful commits
-- Optionally add screenshots to the README
+- `Completed` - repository contains at least 30 meaningful commits
+- `Completed` - README includes setup instructions, architecture overview, seeded admin account, and feature summary
+- `Completed` - service-layer tests are included in `GamesRental.Services.Tests`
+- `Pending` - confirm all tests pass cleanly in the final local environment
+- `Pending` - generate and attach a coverage report for the services
+- `Pending` - add a live deployment URL if public hosting is provided
+- `Optional` - add screenshots to the README

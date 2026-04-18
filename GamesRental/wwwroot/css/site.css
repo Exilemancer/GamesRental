@@ -77,10 +77,11 @@ h1, h2, h3 {
 
 .catalog-card-text {
     font-size: 0.82rem;
-    line-height: 1.3;
+    line-height: 1.3;    
 }
 
 .catalog-card-button {
+    padding-top: 1rem;
     align-self: flex-start;
     padding: 0.25rem 0.65rem;
     font-size: 0.82rem;
@@ -132,6 +133,105 @@ h1, h2, h3 {
     .game-cover-frame {
         height: 190px;
         padding: 9px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .container {
+        padding-left: 0.85rem;
+        padding-right: 0.85rem;
+    }
+
+    .catalog-page-compact {
+        max-width: 100%;
+    }
+
+    .catalog-search-row {
+        margin-bottom: 1rem;
+    }
+
+    .catalog-grid {
+        row-gap: 0.75rem !important;
+    }
+
+    .catalog-grid .col {
+        width: 50%;
+    }
+
+    .game-cover-frame {
+        height: 125px;
+        padding: 0.6rem;
+    }
+
+    .game-cover-image {
+        max-height: 130px;
+    }
+
+    .catalog-card {
+        border-radius: 14px;
+    }
+
+    .catalog-card-body {
+        padding: 0.75rem;
+    }
+
+    .catalog-card-title {
+        font-size: 0.98rem;
+    }
+
+    .catalog-card-text {
+        font-size: 0.79rem;
+        line-height: 1.3;
+        margin-bottom: 0.55rem !important;
+    }
+
+    .catalog-card-button {
+        width: 100%;
+        text-align: center;
+        padding: 0.48rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .catalog-page .d-flex.justify-content-between.align-items-center.mt-4 {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 0.75rem;
+    }
+
+    .catalog-page .d-flex.justify-content-between.align-items-center.mt-4 > .d-flex.gap-2 {
+        width: 100%;
+    }
+
+    .catalog-page .d-flex.justify-content-between.align-items-center.mt-4 > .d-flex.gap-2 > .btn {
+        flex: 1 1 0;
+        text-align: center;
+    }
+}
+
+@media (max-width: 420px) {
+    .catalog-grid .col {
+        width: 100%;
+    }
+
+    .game-cover-frame {
+        height: 110px;
+        padding: 0.5rem;
+    }
+
+    .game-cover-image {
+        max-height: 115px;
+    }
+
+    .catalog-card-body {
+        padding: 0.65rem;
+    }
+
+    .catalog-card-title {
+        font-size: 0.9rem;
+    }
+
+    .catalog-card-text {
+        font-size: 0.74rem;
     }
 }
 
