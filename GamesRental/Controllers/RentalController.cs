@@ -21,6 +21,12 @@ namespace GamesRental.Web.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (await _rentalService.HasActiveRentalForGameAsync(gameId, userId))
+            {
+                TempData["Error"] = "You already have an active rental for this game.";
+                return RedirectToAction("Details", "Game", new { id = gameId });
+            }
+
             bool success = await _rentalService.RentGameAsync(gameId, userId);
 
             if (!success)

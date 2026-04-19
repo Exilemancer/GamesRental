@@ -6,6 +6,8 @@ namespace GamesRental.Services.Contracts
     {
         Task<bool> RentGameAsync(int gameId, string userId);
 
+        Task<bool> HasActiveRentalForGameAsync(int gameId, string userId);
+
         Task<IEnumerable<RentalViewModel>> GetActiveRentalsByUserAsync(string userId);
 
         Task<bool> ReturnGameAsync(int rentalId, string userId);

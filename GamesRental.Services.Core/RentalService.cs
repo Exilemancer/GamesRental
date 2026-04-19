@@ -14,8 +14,21 @@ namespace GamesRental.Services
             _context = context;
         }
 
+        public async Task<bool> HasActiveRentalForGameAsync(int gameId, string userId)
+        {
+            return await _context.Rentals
+                .AnyAsync(r => r.UserId == userId
+                    && r.ReturnedOn == null
+                    && r.GameCopy.GameId == gameId);
+        }
+
         public async Task<bool> RentGameAsync(int gameId, string userId)
         {
+            if (await HasActiveRentalForGameAsync(gameId, userId))
+            {
+                return false;
+            }
+
             var copy = await _context.GameCopies
                 .FirstOrDefaultAsync(gc => gc.GameId == gameId && !gc.IsRented);
 
