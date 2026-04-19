@@ -2,6 +2,10 @@
 
 GamesRental is an ASP.NET Core MVC web application for renting physical game copies, managing a wishlist, and writing reviews for played games. The project extends the earlier course work with an Admin area, paging and search, service-layer tests, stronger authorization behavior, and clearer error handling.
 
+## Live Demo
+
+https://gamesrental.azurewebsites.net
+
 ## Concept
 
 The application simulates a game rental platform where users can:
@@ -138,6 +142,30 @@ dotnet ef database update --project GamesRental.Data --startup-project GamesRent
 dotnet run --project GamesRental
 ```
 
+## Azure Deployment
+
+The project is ready to be deployed to Azure App Service with Azure SQL Database.
+
+Recommended production setup:
+
+1. Create an Azure App Service for the web project.
+2. Create an Azure SQL Database and allow access from the App Service.
+3. In Azure Portal, open the App Service and add a connection string named `DefaultConnection`.
+4. Set `ASPNETCORE_ENVIRONMENT` to `Production`.
+5. Apply the EF Core migrations against the Azure SQL database before first use.
+
+Important notes:
+
+- Do not store the production connection string directly in the repository.
+- `GamesRental/appsettings.Production.json` is included as a safe template, but the real value for `DefaultConnection` should be set from Azure configuration.
+- The local `appsettings.json` currently uses a local SQL Server connection string intended for development only.
+
+Example migration command:
+
+```powershell
+dotnet ef database update --project GamesRental.Data --startup-project GamesRental
+```
+
 ## Default Admin Account
 
 - Email: `admin@site.com`
@@ -160,9 +188,7 @@ Source repository:
 
 Live deployment URL:
 
-- No public deployment is currently attached to the coursework submission.
-- The GitHub repository is used as the primary project reference:
-  [GamesRental on GitHub](https://github.com/Exilemancer/GamesRental)
+- [GamesRental on Azure](https://gamesrental.azurewebsites.net)
 
 Suggested deployment targets:
 
@@ -175,7 +201,7 @@ Suggested deployment targets:
 - `Completed` - repository contains at least 30 meaningful commits
 - `Completed` - README includes setup instructions, architecture overview, seeded admin account, and feature summary
 - `Completed` - service-layer tests are included in `GamesRental.Services.Tests`
+- `Completed` - live deployment URL is included in the README
 - `Pending` - confirm all tests pass cleanly in the final local environment
 - `Pending` - generate and attach a coverage report for the services
-- `Pending` - add a live deployment URL if public hosting is provided
 - `Optional` - add screenshots to the README
