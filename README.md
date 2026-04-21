@@ -92,7 +92,6 @@ Main entities:
 
 On startup, the app seeds:
 
-- `Admin` and `User` roles
 - default admin account
 - starter genres
 - starter platforms
@@ -120,27 +119,12 @@ Test project:
 
 - `GamesRental.Services.Tests`
 
-Run tests with:
-
-```powershell
-dotnet test GamesRental.Services.Tests\GamesRental.Services.Tests.csproj
-```
-
-For final submission, it is recommended to generate and attach a coverage report and verify that service-layer coverage is at least 65%.
-
 ## Setup
 
 1. Open the solution in Visual Studio 2022 or JetBrains Rider.
 2. Update the connection string in `GamesRental/appsettings.json` if needed.
 3. Apply migrations to the local SQL Server database.
 4. Run the web project.
-
-Example commands:
-
-```powershell
-dotnet ef database update --project GamesRental.Data --startup-project GamesRental
-dotnet run --project GamesRental
-```
 
 ## Azure Deployment
 
@@ -176,7 +160,7 @@ dotnet ef database update --project GamesRental.Data --startup-project GamesRent
 The application supports two user roles:
 
 - `User` - can browse the catalog, rent and return games, maintain a wishlist, and create one review per game
-- `Admin` - has access to the Admin area and can manage games, genres, platforms, and statistics
+- `Admin` - the same as 'User' + has access to the Admin area and can manage games, genres, platforms, and statistics
 
 For coursework demonstration purposes, the default admin account is seeded automatically on startup.
 
@@ -188,20 +172,4 @@ Source repository:
 
 Live deployment URL:
 
-- [GamesRental on Azure](https://gamesrental.azurewebsites.net)
-
-Suggested deployment targets:
-
-- Azure App Service
-- IIS with SQL Server
-- another public ASP.NET hosting provider
-
-## Submission Checklist
-
-- `Completed` - repository contains at least 30 meaningful commits
-- `Completed` - README includes setup instructions, architecture overview, seeded admin account, and feature summary
-- `Completed` - service-layer tests are included in `GamesRental.Services.Tests`
-- `Completed` - live deployment URL is included in the README
-- `Pending` - confirm all tests pass cleanly in the final local environment
-- `Pending` - generate and attach a coverage report for the services
-- `Optional` - add screenshots to the README
+- [GamesRental on Azure](https://gamesrentalweb20260419113447-d2a3aueudmhdbbf4.canadacentral-01.azurewebsites.net)
