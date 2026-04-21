@@ -4,7 +4,7 @@ GamesRental is an ASP.NET Core MVC web application for renting physical game cop
 
 ## Live Demo
 
-https://gamesrental.azurewebsites.net
+[https://gamesrental.azurewebsites.net](https://gamesrentalweb20260419113447-d2a3aueudmhdbbf4.canadacentral-01.azurewebsites.net)
 
 ## Concept
 
